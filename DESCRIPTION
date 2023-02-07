@@ -1,0 +1,21 @@
+Package: EBGaME
+Type: Package
+Title: Empirical Bayesian Estimation of Gaussian Matrices
+Version: 0.1.0
+Date: 2023-02-07
+Author: Alton Barbehenn
+Maintainer: Alton Barbehenn <barbehe2@illinois.edu>
+Description: Estimate multidimensional Gaussian means using empirical Bayesian 
+    g-modeling. Methods are able to fully observed data as well as left-, 
+    right-, and interval-censored observations.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    Rcpp (>= 1.0.10),
+    RcppArmadillo
+Suggests:
+    stats,
+    REBayes
+LinkingTo: Rcpp, RcppArmadillo
+RoxygenNote: 7.2.1
