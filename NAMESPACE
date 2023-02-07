@@ -3,6 +3,7 @@
 export(EM)
 export(likMat)
 export(lik_GaussianPIC)
+import(RcppArmadillo)
 import(RcppParallel)
 importFrom(Rcpp,evalCpp)
 useDynLib(EBGaME)

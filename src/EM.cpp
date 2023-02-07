@@ -35,6 +35,7 @@
 //'
 //' @useDynLib EBGaME
 //' @importFrom Rcpp evalCpp
+//' @import RcppArmadillo
 //' @export
 // [[Rcpp::export]]
 arma::vec EM(const arma::mat& A, int maxiter = 1000, double tol = 1e-6) {
