@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // EM
-arma::vec EM(const arma::mat& A, int maxiter, double tol);
+Rcpp::NumericVector EM(const arma::mat& A, int maxiter, double tol);
 RcppExport SEXP _EBGaME_EM(SEXP ASEXP, SEXP maxiterSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

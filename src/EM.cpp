@@ -38,7 +38,7 @@
 //' @import RcppArmadillo
 //' @export
 // [[Rcpp::export]]
-arma::vec EM(const arma::mat& A, int maxiter = 1000, double tol = 1e-6) {
+Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1000, double tol = 1e-6) {
     arma::vec g = arma::ones(A.n_cols) / A.n_cols;
     arma::vec f = A * g;
     double loglik = 0;
@@ -62,5 +62,7 @@ arma::vec EM(const arma::mat& A, int maxiter = 1000, double tol = 1e-6) {
         Rcpp::warning("EM algorithm failed to fully converge: consider increasing maxiter or decreasing tol.");
     }
 
-    return g;
+    Rcpp::NumericVector out = Rcpp::wrap(g);
+    out.attr("dim") = R_NilValue;
+    return out;
 }
