@@ -12,10 +12,9 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    Rcpp (>= 1.0.10),
-    RcppArmadillo
+    Rcpp (>= 1.0.10)
 Suggests:
     stats,
     REBayes
-LinkingTo: Rcpp, RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo, RcppParallel
 RoxygenNote: 7.2.1

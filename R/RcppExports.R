@@ -39,3 +39,81 @@ EM <- function(A, maxiter = 1000L, tol = 1e-6) {
     .Call('_EBGaME_EM', PACKAGE = 'EBGaME', A, maxiter, tol)
 }
 
+#' Helper Function - generate likelihood for pair (L,R) and mean gr
+#'
+#' Compute P(L_i, R_i | theta = t_k) for observations (L_i, R_i) and grid of
+#' mean t_k.
+#'
+#' @param L numeric vector of lower bounds
+#' @param R numeric vector of upper bounds
+#' @param gr numeric vector of means
+#' @return the likelihood under partial interval censoring
+#'
+#' @examples
+#' \dontrun{
+#' # set-up
+#' p = 15
+#' gr = stats::rnorm(p)
+#' L = R = stats::rnorm(p)
+#' missing.idx = sample.int(n = p, size = p/5)
+#' L[missing.idx] = L[missing.idx] - stats::runif(length(missing.idx), 0, 1)
+#' R[missing.idx] = R[missing.idx] + stats::runif(length(missing.idx), 0, 1)
+#'
+#' # R solution
+#' lik = prod(ifelse(
+#'            L == R,
+#'            stats::dnorm(L-gr),
+#'            stats::pnorm(R-gr) - stats::pnorm(L-gr)))
+#'
+#' # Compare R to RcppParallel method
+#' all.equal(lik, lik_GaussianPIC(L, R, gr))
+#' }
+#' @useDynLib EBGaME
+#' @importFrom Rcpp evalCpp
+#' @export
+lik_GaussianPIC <- function(L, R, gr) {
+    .Call('_EBGaME_lik_GaussianPIC', PACKAGE = 'EBGaME', L, R, gr)
+}
+
+#' Helper Function - generate likelihood matrix
+#'
+#' Compute a matrix L whose entries are L[i,k] = P(L_i, R_i | theta = t_k) for
+#' observations (L_i, R_i) and grid of means t_k.
+#'
+#' @param L n x p matrix of lower bounds
+#' @param R n x p matrix of upper bounds
+#' @param gr m x p matrix of candidate means
+#' @return the n x m likelihood matrix under partial interval censoring
+#'
+#' @examples
+#' \dontrun{
+#' # set-up
+#' n = 100; m = 50; p = 5
+#' gr = matrix(stats::rnorm(m*p), m, p)
+#' L = R = matrix(stats::rnorm(n*p), n, p)
+#' missing.idx = sample.int(n = n*p, size = p*p)
+#' L[missing.idx] = L[missing.idx] - stats::runif(p, 0, 1)
+#'
+#' # R solution
+#' lik = matrix(nrow = n, ncol = m)
+#' for (i in 1:n) {
+#'     for(k in 1:m) {
+#'         lik[i,k] = prod(ifelse(
+#'             L[i,] == R[i,],
+#'             stats::dnorm(L[i,]-gr[k,]),
+#'             stats::pnorm(R[i,]-gr[k,]) - stats::pnorm(L[i,]-gr[k,])
+#'         ))
+#'     }
+#' }
+#'
+#' # Compare R to RcppParallel method
+#' all.equal(lik, likMat(L, R, gr))
+#' }
+#' @useDynLib EBGaME
+#' @importFrom Rcpp evalCpp
+#' @import RcppParallel
+#' @export
+likMat <- function(L, R, gr) {
+    .Call('_EBGaME_likMat', PACKAGE = 'EBGaME', L, R, gr)
+}
+

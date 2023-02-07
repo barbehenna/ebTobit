@@ -24,9 +24,37 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// lik_GaussianPIC
+double lik_GaussianPIC(Rcpp::NumericVector L, Rcpp::NumericVector R, Rcpp::NumericVector gr);
+RcppExport SEXP _EBGaME_lik_GaussianPIC(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type L(LSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type R(RSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gr(grSEXP);
+    rcpp_result_gen = Rcpp::wrap(lik_GaussianPIC(L, R, gr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// likMat
+Rcpp::NumericMatrix likMat(Rcpp::NumericMatrix L, Rcpp::NumericMatrix R, Rcpp::NumericMatrix gr);
+RcppExport SEXP _EBGaME_likMat(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type L(LSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type R(RSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type gr(grSEXP);
+    rcpp_result_gen = Rcpp::wrap(likMat(L, R, gr));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_EBGaME_EM", (DL_FUNC) &_EBGaME_EM, 3},
+    {"_EBGaME_lik_GaussianPIC", (DL_FUNC) &_EBGaME_lik_GaussianPIC, 3},
+    {"_EBGaME_likMat", (DL_FUNC) &_EBGaME_likMat, 3},
     {NULL, NULL, 0}
 };
 
