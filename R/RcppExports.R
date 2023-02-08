@@ -36,7 +36,7 @@
 #' @importFrom Rcpp evalCpp
 #' @import RcppArmadillo
 #' @export
-EM <- function(A, maxiter = 1000L, tol = 1e-6) {
+EM <- function(A, maxiter = 1e+6L, tol = 1e-6) {
     .Call('_EBGaME_EM', PACKAGE = 'EBGaME', A, maxiter, tol)
 }
 
