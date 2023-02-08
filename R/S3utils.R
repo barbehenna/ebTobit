@@ -1,6 +1,26 @@
 #### S3 methods to help work with EBGaME objects ####
 
 
+#' Validate EBGaME Object
+#' @param object any R object
+#' @export
+is.EBGaME <- function(object) {
+    all(inherits(object, "EBGaME") &
+            is.numeric(object$prior) &
+            is.vector(object$prior) &
+            is.numeric(object$lik) &
+            is.matrix(object$lik) &
+            is.numeric(object$gr) &
+            is.matrix(object$gr) &
+            ncol(object$lik) == nrow(object$gr) &
+            length(object$prior) == nrow(object$gr) &
+            all(object$lik >= 0) &
+            all(object$prior >= 0) &
+            sum(object$prior) == 1
+    )
+}
+
+
 #' Marginal Log-likelihood of an EBGaME object
 #' @param object an object inheriting from class \code{\link{EBGaME}}
 #' @param ... not used
