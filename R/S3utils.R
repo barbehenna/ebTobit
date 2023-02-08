@@ -16,7 +16,7 @@ is.EBGaME <- function(object) {
             length(object$prior) == nrow(object$gr) &
             all(object$lik >= 0) &
             all(object$prior >= 0) &
-            sum(object$prior) == 1
+            abs(sum(object$prior) - 1) <= sqrt(.Machine$double.eps)
     )
 }
 

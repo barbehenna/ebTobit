@@ -25,7 +25,9 @@ the observations
 }
 \description{
 Fit and estimate the nonparametric maximum likelihood estimator in R^p
-(p >= 1) when the likelihood is Gaussian and possibly interval censored.
+(p >= 1) when the likelihood is Gaussian and possibly interval censored. If
+p = 1, then \code{L}, \code{R}, and \code{gr} may be vectors (they are
+immediately converted into matrices internally).
 }
 \details{
 To use a custom fitting algorithm, define a function \code{MyAlg} that

@@ -1,7 +1,9 @@
 #' Create and Fit an EBGaME Object for Matrix Estimation
 #'
 #' Fit and estimate the nonparametric maximum likelihood estimator in R^p
-#' (p >= 1) when the likelihood is Gaussian and possibly interval censored.
+#' (p >= 1) when the likelihood is Gaussian and possibly interval censored. If
+#' p = 1, then \code{L}, \code{R}, and \code{gr} may be vectors (they are
+#' immediately converted into matrices internally).
 #'
 #' To use a custom fitting algorithm, define a function \code{MyAlg} that
 #' takes in an n x m likelihood matrix: P_ij = P(X_i | theta = t_j) and returns
@@ -46,6 +48,13 @@
 #' R <- ifelse(X < ldl, ldl, ifelse(X <= udl, X, Inf))
 #' fit2 <- EBGaME(L, R)
 EBGaME <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
+    # allow vector inputs when p = 1
+    if (is.vector(L) & is.vector(R) & is.vector(gr)) {
+        L <- matrix(L, ncol = 1)
+        R <- matrix(R, ncol = 1)
+        gr <- matrix(gr, ncol = 1)
+    }
+
     # basic checks
     stopifnot(is.matrix(L))
     stopifnot(all(dim(L) == dim(R)))
@@ -105,7 +114,7 @@ new_EBGaME <- function(prior, gr, lik) {
     stopifnot(all(lik >= 0))
     stopifnot(length(prior) == nrow(gr))
     stopifnot(all(prior >= 0))
-    stopifnot(sum(prior) == 1)
+    stopifnot(abs(sum(prior) - 1) <= sqrt(.Machine$double.eps))
 
     # create object
     structure(list(
