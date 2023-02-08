@@ -70,6 +70,44 @@ EBGaME <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
     prior <- algorithm(lik, ...)
 
     # return fit
+    new_EBGaME(
+        prior = prior,
+        gr = gr,
+        lik = lik
+    )
+}
+
+
+
+
+#' Create a new EBGaME object
+#'
+#' Validate the provided elements and populate the object. Future extensions may
+#' be loosened to allow non-numeric \code{gr} but it is currently required for
+#' posterior mean and mediod calculations.
+#'
+#' @param prior numeric vector of non-negative weights (sums to one)
+#' @param gr numeric matrix of support points
+#' @param lik numeric matrix of likelihoods
+#' @return an \code{EBGaME} object containing at least the prior weights,
+#' corresponding grid/support points, and likelihood matrix relating the grid to
+#' the observations
+#' @export
+new_EBGaME <- function(prior, gr, lik) {
+    # basic checks
+    stopifnot(is.vector(prior))
+    stopifnot(is.numeric(prior))
+    stopifnot(is.matrix(gr))
+    stopifnot(is.numeric(gr))
+    stopifnot(is.matrix(lik))
+    stopifnot(is.numeric(lik))
+    stopifnot(ncol(lik) == nrow(gr))
+    stopifnot(all(lik >= 0))
+    stopifnot(length(prior) == nrow(gr))
+    stopifnot(all(prior >= 0))
+    stopifnot(sum(prior) == 1)
+
+    # create object
     structure(list(
         prior = prior,
         gr = gr,
