@@ -2,6 +2,7 @@
 
 S3method(fitted,EBGaME)
 S3method(logLik,EBGaME)
+S3method(predict,EBGaME)
 export(ConvexDual)
 export(ConvexPrimal)
 export(EBGaME)

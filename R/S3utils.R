@@ -72,9 +72,43 @@ posterior_L1mediod.EBGaME <- function(object) {
 #' corresponds to the posterior median in one-dimension.
 #'
 #' @param object an object inheriting from class \code{\link{EBGaME}}
-#' @param method either "mean" or "L1mediod" corresponding to the S3 methods:
+#' @param method either "mean" or "L1mediod" corresponding to the methods:
 #' \code{posterior_*.EBGaME()}
 #' @param ... not used
 #' @export
 fitted.EBGaME <- function(object, method = "mean", ...)
     match.fun(paste0("posterior_",method,".EBGaME"))(object)
+
+
+#' Fitted Estimates of an EBGaME object
+#'
+#' Compute either the posterior mean (default) or posterior L1 mediod which
+#' corresponds to the posterior median in one-dimension.
+#'
+#' @param object an object inheriting from class \code{\link{EBGaME}}
+#' @param L n x p matrix of lower bounds on observations
+#' @param R n x p matrix of upper bounds on observations
+#' @param method either "mean" or "L1mediod" corresponding to the methods:
+#' \code{posterior_*.EBGaME()}
+#' @param ... not used
+#' @export
+predict.EBGaME <- function(object, L, R = L, method = "mean", ...) {
+    # allow vector inputs when p = 1
+    if (is.vector(L) & is.vector(R)) {
+        L <- matrix(L, ncol = 1)
+        R <- matrix(R, ncol = 1)
+    }
+
+    # basic checks
+    stopifnot(is.EBGaME(object))
+    stopifnot(is.matrix(L))
+    stopifnot(all(dim(L) == dim(R)))
+    stopifnot(all(L <= R))
+
+    # likelihood of with new observations
+    new_lik <- likMat(L, R, object$gr)
+
+    # compute posterior statistic
+    new_obj <- new_EBGaME(object$prior, object$gr, new_lik)
+    match.fun(paste0("posterior_",method,".EBGaME"))(new_obj)
+}
