@@ -33,7 +33,7 @@
 //' )
 //' }
 //'
-//' @useDynLib EBGaME
+//' @useDynLib EBayesMat
 //' @importFrom Rcpp evalCpp
 //' @import RcppArmadillo
 //' @export

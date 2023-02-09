@@ -58,12 +58,12 @@ This structure is commonly referred to as partially interval censored data and i
 
 ### What does it do?
 
-This package provides an object `EBGaME` (Empirical Bayes Gaussian Matrix Estimate) that estimates the prior, $g$ over a user-specified grid `gr` and then computes the posterior mean or $\ell_1$ mediod as estimates for $\theta$. By default `gr` is set using the exemplar method so the grid is the maximum likelihood estimate for each $\theta_{ij}$.
+This package provides an object `EBayesMat` (Empirical Bayes Gaussian Matrix estimate) that estimates the prior, $g$ over a user-specified grid `gr` and then computes the posterior mean or $\ell_1$ mediod as estimates for $\theta$. By default `gr` is set using the exemplar method so the grid is the maximum likelihood estimate for each $\theta_{ij}$.
 
 Suppose $p = 1$ and there is no censoring, then the basic utility is:
 
 ```r
-library(EBGaME)
+library(EBayesMat)
 
 # create noisy measurements
 n <- 100
@@ -71,7 +71,7 @@ t <- sample(c(0, 5), size = n, replace = TRUE, prob = c(0.8, 0.2))
 x <- t + stats::rnorm(n)
 
 # fit g-model with default prior grid
-res1 <- EBGaME(x)
+res1 <- EBayesMat(x)
 
 # measure performance of estimated posterior mean
 mean((t - fitted(res1))^2)
@@ -80,7 +80,7 @@ mean((t - fitted(res1))^2)
 Next we can look at a more complicated example with $p = 10$:
 
 ```r
-library(EBGaME)
+library(EBayesMat)
 
 # create noisy measurements (low rank structure)
 n <- 1000; p <- 10; r <- 3
@@ -93,15 +93,15 @@ L <- ifelse(x < 1, 0, x)
 R <- ifelse(x < 1, 1, x)
 
 # fit g-model with default prior grid
-res2 <- EBGaME(x)
-res3 <- EBGaME(L, R)
+res2 <- EBayesMat(x)
+res3 <- EBayesMat(L, R)
 
 # oberve that the censoring affects the fitted range 
 range(fitted(res2))
 range(fitted(res3))
 
 # fit censored data with a different grid (large and random not MLE)
-res4 <- EBGaME(
+res4 <- EBayesMat(
     L = L,
     R = R,
     gr = sapply(1:p, function(j) stats::runif(1e+4, min = min(L[,j]), max = max(R[,j]))),

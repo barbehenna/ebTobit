@@ -4,7 +4,7 @@
 \alias{EM}
 \title{Nonparametric Maximum Likelihood via Expectation Maximization}
 \usage{
-EM(A, maxiter = 1000L, tol = 1e-06)
+EM(A, maxiter = 1000000L, tol = 1e-06)
 }
 \arguments{
 \item{A}{numeric matrix likelihoods}

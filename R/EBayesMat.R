@@ -1,4 +1,4 @@
-#' Create and Fit an EBGaME Object for Matrix Estimation
+#' Create and Fit an EBayesMat Object for Matrix Estimation
 #'
 #' Fit and estimate the nonparametric maximum likelihood estimator in R^p
 #' (p >= 1) when the likelihood is Gaussian and possibly interval censored. If
@@ -23,7 +23,7 @@
 #' @param ... further arguments passed into fitting method such as \code{rtol}
 #' and \code{maxiter}, see for example \code{\link{EM}}
 #'
-#' @return a fitted \code{EBGaME} object containing at least the prior weights,
+#' @return a fitted \code{EBayesMat} object containing at least the prior weights,
 #' corresponding grid/support points, and likelihood matrix relating the grid to
 #' the observations
 #' @export
@@ -39,15 +39,15 @@
 #' X <- TH + matrix(stats::rnorm(n*p), n, p)
 #'
 #' # fit uncensored method
-#' fit1 <- EBGaME(X)
+#' fit1 <- EBayesMat(X)
 #'
 #' # fit left-censored method
 #' ldl <- 1 # lower and upper detection limits
 #' udl <- Inf
 #' L <- ifelse(X < ldl, 0, ifelse(X <= udl, X, udl))
 #' R <- ifelse(X < ldl, ldl, ifelse(X <= udl, X, Inf))
-#' fit2 <- EBGaME(L, R)
-EBGaME <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
+#' fit2 <- EBayesMat(L, R)
+EBayesMat <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
     # allow vector inputs when p = 1
     if (is.vector(L) & is.vector(R) & is.vector(gr)) {
         L <- matrix(L, ncol = 1)
@@ -79,7 +79,7 @@ EBGaME <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
     prior <- algorithm(lik, ...)
 
     # return fit
-    new_EBGaME(
+    new_EBayesMat(
         prior = prior,
         gr = gr,
         lik = lik
@@ -89,7 +89,7 @@ EBGaME <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
 
 
 
-#' Create a new EBGaME object
+#' Create a new EBayesMat object
 #'
 #' Validate the provided elements and populate the object. Future extensions may
 #' be loosened to allow non-numeric \code{gr} but it is currently required for
@@ -98,11 +98,11 @@ EBGaME <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
 #' @param prior numeric vector of non-negative weights (sums to one)
 #' @param gr numeric matrix of support points
 #' @param lik numeric matrix of likelihoods
-#' @return an \code{EBGaME} object containing at least the prior weights,
+#' @return an \code{EBayesMat} object containing at least the prior weights,
 #' corresponding grid/support points, and likelihood matrix relating the grid to
 #' the observations
 #' @export
-new_EBGaME <- function(prior, gr, lik) {
+new_EBayesMat <- function(prior, gr, lik) {
     # basic checks
     stopifnot(is.vector(prior))
     stopifnot(is.numeric(prior))
@@ -121,5 +121,5 @@ new_EBGaME <- function(prior, gr, lik) {
         prior = prior,
         gr = gr,
         lik = lik
-    ), class = "EBGaME")
+    ), class = "EBayesMat")
 }

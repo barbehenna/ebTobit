@@ -42,7 +42,7 @@ inline double phi_cpp(double x, double y) {
 //' # Compare R to RcppParallel method
 //' all.equal(lik, lik_GaussianPIC(L, R, gr))
 //' }
-//' @useDynLib EBGaME
+//' @useDynLib EBayesMat
 //' @importFrom Rcpp evalCpp
 //' @export
 // [[Rcpp::export]]
@@ -167,7 +167,7 @@ struct LikMat : public RcppParallel::Worker {
 //' # Compare R to RcppParallel method
 //' all.equal(lik, likMat(L, R, gr))
 //' }
-//' @useDynLib EBGaME
+//' @useDynLib EBayesMat
 //' @importFrom Rcpp evalCpp
 //' @import RcppParallel
 //' @export
