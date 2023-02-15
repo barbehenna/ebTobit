@@ -116,6 +116,15 @@ predict(res4, y, method = "L1mediod") # posterior L1-mediod
 ```
 
 
+### How do install it?
+
+Until the package is available on CRAN, it can be installed directly from GitHub:
+
+```r
+remotes::install_github("barbehenna/EBayesMat")
+```
+
+
 ### Who wrote it?
 
 Alton Barbehenn
