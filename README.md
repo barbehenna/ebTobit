@@ -127,7 +127,7 @@ remotes::install_github("barbehenna/EBayesMat")
 
 ### Who wrote it?
 
-Alton Barbehenn
+Alton Barbehenn and [Sihai Dave Zhao](https://github.com/sdzhao)
 
 
 ### What license?

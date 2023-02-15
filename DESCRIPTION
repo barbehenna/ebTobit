@@ -3,8 +3,10 @@ Package: EBayesMat
 Title: Empirical Bayesian Estimation of Gaussian Matrices
 Version: 0.1.0
 Date: 2023-02-07
-Authors@R:
-    person("Alton", "Barbehenn", , "altonbarbehenn@gmail.com", role = c("aut", "cre"))
+Authors@R:c(
+    person("Alton", "Barbehenn", , "altonbarbehenn@gmail.com", role = c("aut", "cre")),
+    person("Sihai Dave", "Zhao", , "sdzhao@illinois.edu", role = "aut")
+  )
 Description: Estimate multidimensional Gaussian means using empirical
     Bayesian g-modeling. Methods are able to fully observed data as well
     as left-, right-, and interval-censored observations.
