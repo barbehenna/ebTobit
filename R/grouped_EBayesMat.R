@@ -64,8 +64,8 @@ grouped_EBayesMat <- function(L, R = L, gr = (L+R)/2, algorithm = "EM", s1 = 1,
         group.idx <- which(levels(group)[group] == level)
 
         # subset data and pre-compute range
-        L0 <- L[group.idx, ]
-        R0 <- R[group.idx, ]
+        L0 <- L[group.idx, , drop = FALSE]
+        R0 <- R[group.idx, , drop = FALSE]
 
         # estimate posterior mean of group
         fit <- EBayesMat(

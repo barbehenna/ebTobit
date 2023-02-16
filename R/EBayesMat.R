@@ -113,8 +113,12 @@ new_EBayesMat <- function(prior, gr, lik) {
     stopifnot(ncol(lik) == nrow(gr))
     stopifnot(all(lik >= 0))
     stopifnot(length(prior) == nrow(gr))
-    stopifnot(all(prior >= 0))
-    stopifnot(abs(sum(prior) - 1) <= sqrt(.Machine$double.eps))
+
+    if (any(prior < -.Machine$double.eps))
+        warning("prior contains negative values: consider refitting the model")
+    
+    if (abs(sum(prior) - 1) > sqrt(.Machine$double.eps))
+        warning("prior does not sum to one: model may not be useful")
 
     # create object
     structure(list(
