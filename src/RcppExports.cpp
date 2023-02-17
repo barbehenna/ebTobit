@@ -12,15 +12,15 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // EM
-Rcpp::NumericVector EM(const arma::mat& A, int maxiter, double tol);
-RcppExport SEXP _EBayesMat_EM(SEXP ASEXP, SEXP maxiterSEXP, SEXP tolSEXP) {
+Rcpp::NumericVector EM(const arma::mat& A, int maxiter, double rtol);
+RcppExport SEXP _EBayesMat_EM(SEXP ASEXP, SEXP maxiterSEXP, SEXP rtolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type A(ASEXP);
     Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(EM(A, maxiter, tol));
+    Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
+    rcpp_result_gen = Rcpp::wrap(EM(A, maxiter, rtol));
     return rcpp_result_gen;
 END_RCPP
 }

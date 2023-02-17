@@ -1,3 +1,4 @@
+#include <cmath>
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
@@ -14,7 +15,7 @@
 //'
 //' @param A numeric matrix likelihoods
 //' @param maxiter early stopping condition
-//' @param tol convergence tolerance
+//' @param rtol convergence tolerance: abs(loss_new - loss_old)/abs(loss_old)
 //' @return the estimated prior distribution (a vector of masses corresponding
 //' to the columns of A)
 //'
@@ -38,7 +39,7 @@
 //' @import RcppArmadillo
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1e+6, double tol = 1e-6) {
+Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1e+4, double rtol = 1e-4) {
     arma::vec g = arma::ones(A.n_cols) / A.n_cols;
     arma::vec f = A * g;
     double loglik = 0;
@@ -50,7 +51,7 @@ Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1e+6, double tol = 1e-6
         f = A * g;
 
         loglik = arma::sum(arma::log(f));
-        if(loglik - loglik_old < tol) {
+        if(loglik - loglik_old < rtol * abs(loglik_old)) {
             conv = true;
             break;
         }
@@ -59,7 +60,7 @@ Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1e+6, double tol = 1e-6
     }
 
     if (!conv) {
-        Rcpp::warning("EM algorithm failed to fully converge: consider increasing maxiter or decreasing tol.");
+        Rcpp::warning("EM algorithm failed to fully converge: consider increasing maxiter or decreasing rtol.");
     }
 
     Rcpp::NumericVector out = Rcpp::wrap(g);

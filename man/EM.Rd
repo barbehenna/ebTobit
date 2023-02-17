@@ -4,14 +4,14 @@
 \alias{EM}
 \title{Nonparametric Maximum Likelihood via Expectation Maximization}
 \usage{
-EM(A, maxiter = 1000000L, tol = 1e-06)
+EM(A, maxiter = 10000L, rtol = 1e-04)
 }
 \arguments{
 \item{A}{numeric matrix likelihoods}
 
 \item{maxiter}{early stopping condition}
 
-\item{tol}{convergence tolerance}
+\item{rtol}{convergence tolerance: abs(loss_new - loss_old)/abs(loss_old)}
 }
 \value{
 the estimated prior distribution (a vector of masses corresponding

@@ -13,7 +13,7 @@
 #'
 #' @param A numeric matrix likelihoods
 #' @param maxiter early stopping condition
-#' @param tol convergence tolerance
+#' @param rtol convergence tolerance: abs(loss_new - loss_old)/abs(loss_old)
 #' @return the estimated prior distribution (a vector of masses corresponding
 #' to the columns of A)
 #'
@@ -36,8 +36,8 @@
 #' @importFrom Rcpp evalCpp
 #' @import RcppArmadillo
 #' @export
-EM <- function(A, maxiter = 1e+6L, tol = 1e-6) {
-    .Call('_EBayesMat_EM', PACKAGE = 'EBayesMat', A, maxiter, tol)
+EM <- function(A, maxiter = 1e+4L, rtol = 1e-4) {
+    .Call('_EBayesMat_EM', PACKAGE = 'EBayesMat', A, maxiter, rtol)
 }
 
 #' Helper Function - generate likelihood for pair (L,R) and mean gr
