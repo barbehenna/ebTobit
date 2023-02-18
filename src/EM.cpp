@@ -39,7 +39,7 @@
 //' @import RcppArmadillo
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1e+4, double rtol = 1e-4) {
+Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1e+4, double rtol = 1e-6) {
     arma::vec g = arma::ones(A.n_cols) / A.n_cols;
     arma::vec f = A * g;
     double loglik = 0;

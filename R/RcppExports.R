@@ -36,7 +36,7 @@
 #' @importFrom Rcpp evalCpp
 #' @import RcppArmadillo
 #' @export
-EM <- function(A, maxiter = 1e+4L, rtol = 1e-4) {
+EM <- function(A, maxiter = 1e+4L, rtol = 1e-6) {
     .Call('_EBayesMat_EM', PACKAGE = 'EBayesMat', A, maxiter, rtol)
 }
 
