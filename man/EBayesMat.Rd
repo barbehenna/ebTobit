@@ -4,7 +4,7 @@
 \alias{EBayesMat}
 \title{Create and Fit an EBayesMat Object for Matrix Estimation}
 \usage{
-EBayesMat(L, R = L, gr = (R + L)/2, algorithm = "EM", ...)
+EBayesMat(L, R = L, gr = (R + L)/2, algorithm = "EM", pos_lik = TRUE, ...)
 }
 \arguments{
 \item{L}{n x p matrix of lower bounds on observations}
@@ -14,6 +14,10 @@ EBayesMat(L, R = L, gr = (R + L)/2, algorithm = "EM", ...)
 \item{gr}{m x p matrix of grid points}
 
 \item{algorithm}{method to fit prior, either a function or function name}
+
+\item{pos_lik}{boolean indicating whether to lower-bound the likelihood
+matrix with \code{.Machine$double.xmin} (default: TRUE); helps avoid possible
+divide-by-zero errors in \code{algorithm}}
 
 \item{...}{further arguments passed into fitting method such as \code{rtol}
 and \code{maxiter}, see for example \code{\link{EM}}}

@@ -20,6 +20,9 @@
 #' @param R n x p matrix of upper bounds on observations
 #' @param gr m x p matrix of grid points
 #' @param algorithm method to fit prior, either a function or function name
+#' @param pos_lik boolean indicating whether to lower-bound the likelihood
+#' matrix with \code{.Machine$double.xmin} (default: TRUE); helps avoid possible
+#' divide-by-zero errors in \code{algorithm}
 #' @param ... further arguments passed into fitting method such as \code{rtol}
 #' and \code{maxiter}, see for example \code{\link{EM}}
 #'
@@ -47,7 +50,7 @@
 #' L <- ifelse(X < ldl, 0, ifelse(X <= udl, X, udl))
 #' R <- ifelse(X < ldl, ldl, ifelse(X <= udl, X, Inf))
 #' fit2 <- EBayesMat(L, R)
-EBayesMat <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
+EBayesMat <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", pos_lik = TRUE, ...) {
     # allow vector inputs when p = 1
     if (is.vector(L) & is.vector(R) & is.vector(gr)) {
         L <- matrix(L, ncol = 1)
@@ -74,6 +77,7 @@ EBayesMat <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", ...) {
     # define full likelihood matrix
     # P_ij = prod_{k=1}^m P(X_ik | theta = t_jk)
     lik <- likMat(L = L, R = R, gr = gr)
+    if (pos_lik) lik <- pmax(lik, .Machine$double.xmin)
 
     # fit prior
     prior <- algorithm(lik, ...)
