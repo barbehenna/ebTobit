@@ -13,8 +13,8 @@
 
 \item{R}{n x p matrix of upper bounds on observations}
 
-\item{method}{either "mean" or "L1mediod" corresponding to the methods:
-\code{posterior_*.EBayesMat()}}
+\item{method}{either "mean", "L1mediod", or "mode" corresponding to the 
+methods: \code{posterior_*.EBayesMat()}}
 
 \item{...}{not used}
 }

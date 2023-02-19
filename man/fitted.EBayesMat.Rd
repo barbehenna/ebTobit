@@ -9,8 +9,8 @@
 \arguments{
 \item{object}{an object inheriting from class \code{\link{EBayesMat}}}
 
-\item{method}{either "mean" or "L1mediod" corresponding to the methods:
-\code{posterior_*.EBayesMat()}}
+\item{method}{either "mean", "L1mediod", or "mode" corresponding to the 
+methods: \code{posterior_*.EBayesMat()}}
 
 \item{...}{not used}
 }
