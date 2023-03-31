@@ -8,9 +8,9 @@ grouped_EBayesMat(
   L,
   R = L,
   gr = (L + R)/2,
-  algorithm = "EM",
   s1 = 1,
   group = integer(nrow(L)),
+  algorithm = "EM",
   ...
 )
 }
@@ -21,13 +21,13 @@ grouped_EBayesMat(
 
 \item{gr}{m x p matrix of candidate means (MLE by default)}
 
-\item{algorithm}{method to fit prior, see \code{\link{EBayesMat}} for more
-details}
-
-\item{s1}{standard deviation for every observation}
+\item{s1}{n x p matrix of standard deviations for every observation}
 
 \item{group}{grouping variable denoting which rows follow which priors,
 refer to details for more}
+
+\item{algorithm}{method to fit prior, see \code{\link{EBayesMat}} for more
+details}
 
 \item{...}{further arguments passed into fitting method}
 }
@@ -50,10 +50,6 @@ bounds are different then the observation is known to lie in the specified
 interval. This format allows for directly observed data along with left-,
 right-, and interval-censored observations. Each rows of L and R are
 observations or bounds in R^p.
-
-\code{s1} represents the Gaussian likelihood standard deviation for every
-observation; it can be a scalar, vector, or matrix, so long as \code{L / s1}
-is possible.
 }
 \examples{
 set.seed(1)
@@ -61,9 +57,9 @@ n <- 100
 p <- 2
 TH <- cbind(rnorm(n), rnorm(n, mean = c(0,5)))
 X <- TH + matrix(rnorm(n*p), n, p)
-fit0 <- grouped_EBayesMat(X)
+fit0 <- grouped_EBayesMat(X, s1 = matrix(1, n, p))
 all.equal(fit0, fitted(EBayesMat(X)))
 
-fit1 <- grouped_EBayesMat(X, group = TH[,2] > 2.5) # adding side information
+fit1 <- grouped_EBayesMat(X, s1 = matrix(1, n, p), group = TH[,2] > 2) # adding side information
 mean((TH - fit0)^2) > mean((TH - fit1)^2)
 }

@@ -15,18 +15,14 @@
 #' right-, and interval-censored observations. Each rows of L and R are
 #' observations or bounds in R^p.
 #'
-#' \code{s1} represents the Gaussian likelihood standard deviation for every
-#' observation; it can be a scalar, vector, or matrix, so long as \code{L / s1}
-#' is possible.
-#'
 #' @param L n x p matrix of lower bounds on observations
 #' @param R n x p matrix of upper bounds on observations
 #' @param gr m x p matrix of candidate means (MLE by default)
-#' @param algorithm method to fit prior, see \code{\link{EBayesMat}} for more
-#' details
-#' @param s1 standard deviation for every observation
+#' @param s1 n x p matrix of standard deviations for every observation
 #' @param group grouping variable denoting which rows follow which priors,
 #' refer to details for more
+#' @param algorithm method to fit prior, see \code{\link{EBayesMat}} for more
+#' details
 #' @param ... further arguments passed into fitting method
 #'
 #' @return a fitted posterior mean matrix (n x p)
@@ -38,23 +34,22 @@
 #' p <- 2
 #' TH <- cbind(rnorm(n), rnorm(n, mean = c(0,5)))
 #' X <- TH + matrix(rnorm(n*p), n, p)
-#' fit0 <- grouped_EBayesMat(X)
+#' fit0 <- grouped_EBayesMat(X, s1 = matrix(1, n, p))
 #' all.equal(fit0, fitted(EBayesMat(X)))
 #' 
-#' fit1 <- grouped_EBayesMat(X, group = TH[,2] > 2.5) # adding side information
+#' fit1 <- grouped_EBayesMat(X, s1 = matrix(1, n, p), group = TH[,2] > 2) # adding side information
 #' mean((TH - fit0)^2) > mean((TH - fit1)^2)
-grouped_EBayesMat <- function(L, R = L, gr = (L+R)/2, algorithm = "EM", s1 = 1,
-                              group = integer(nrow(L)), ...) {
+grouped_EBayesMat <- function(L, R = L, gr = (L+R)/2, s1 = 1, group = integer(nrow(L)),
+                              algorithm = "EM", ...) {
     # basic checks
     stopifnot(is.matrix(L))
     stopifnot(all(dim(L) == dim(R)))
     stopifnot(all(L <= R))
     stopifnot(all(s1 >= 0))
+    stopifnot(all(dim(s1) == dim(L)))
     stopifnot(length(group) == nrow(L))
 
     # set-up
-    L <- L / s1
-    R <- R / s1
     group <- as.factor(group)
 
     # fit models for each group separately
@@ -66,17 +61,19 @@ grouped_EBayesMat <- function(L, R = L, gr = (L+R)/2, algorithm = "EM", s1 = 1,
         # subset data and pre-compute range
         L0 <- L[group.idx, , drop = FALSE]
         R0 <- R[group.idx, , drop = FALSE]
-
+        s <- s1[group.idx, , drop = FALSE]
+        
         # estimate posterior mean of group
         fit <- EBayesMat(
             L = L0,
             R = R0,
             gr = gr,
+            s1 = s,
             algorithm = algorithm,
             ...
         )
         est[group.idx, ] <- posterior_mean.EBayesMat(fit)
     }
 
-    est * s1
+    est
 }

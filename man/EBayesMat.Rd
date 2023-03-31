@@ -4,7 +4,15 @@
 \alias{EBayesMat}
 \title{Create and Fit an EBayesMat Object for Matrix Estimation}
 \usage{
-EBayesMat(L, R = L, gr = (R + L)/2, algorithm = "EM", pos_lik = TRUE, ...)
+EBayesMat(
+  L,
+  R = L,
+  gr = (R + L)/2,
+  s1 = 1,
+  algorithm = "EM",
+  pos_lik = TRUE,
+  ...
+)
 }
 \arguments{
 \item{L}{n x p matrix of lower bounds on observations}
@@ -12,6 +20,9 @@ EBayesMat(L, R = L, gr = (R + L)/2, algorithm = "EM", pos_lik = TRUE, ...)
 \item{R}{n x p matrix of upper bounds on observations}
 
 \item{gr}{m x p matrix of grid points}
+
+\item{s1}{a single numeric standard deviation or an n x p matrix of standard
+deviations}
 
 \item{algorithm}{method to fit prior, either a function or function name}
 

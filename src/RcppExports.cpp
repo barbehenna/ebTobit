@@ -25,36 +25,38 @@ BEGIN_RCPP
 END_RCPP
 }
 // lik_GaussianPIC
-double lik_GaussianPIC(Rcpp::NumericVector L, Rcpp::NumericVector R, Rcpp::NumericVector gr);
-RcppExport SEXP _EBayesMat_lik_GaussianPIC(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP) {
+double lik_GaussianPIC(Rcpp::NumericVector L, Rcpp::NumericVector R, Rcpp::NumericVector gr, Rcpp::NumericVector s1);
+RcppExport SEXP _EBayesMat_lik_GaussianPIC(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP, SEXP s1SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type L(LSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type R(RSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gr(grSEXP);
-    rcpp_result_gen = Rcpp::wrap(lik_GaussianPIC(L, R, gr));
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type s1(s1SEXP);
+    rcpp_result_gen = Rcpp::wrap(lik_GaussianPIC(L, R, gr, s1));
     return rcpp_result_gen;
 END_RCPP
 }
 // likMat
-Rcpp::NumericMatrix likMat(Rcpp::NumericMatrix L, Rcpp::NumericMatrix R, Rcpp::NumericMatrix gr);
-RcppExport SEXP _EBayesMat_likMat(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP) {
+Rcpp::NumericMatrix likMat(Rcpp::NumericMatrix L, Rcpp::NumericMatrix R, Rcpp::NumericMatrix gr, Rcpp::NumericMatrix s1);
+RcppExport SEXP _EBayesMat_likMat(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP, SEXP s1SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type L(LSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type R(RSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type gr(grSEXP);
-    rcpp_result_gen = Rcpp::wrap(likMat(L, R, gr));
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type s1(s1SEXP);
+    rcpp_result_gen = Rcpp::wrap(likMat(L, R, gr, s1));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_EBayesMat_EM", (DL_FUNC) &_EBayesMat_EM, 3},
-    {"_EBayesMat_lik_GaussianPIC", (DL_FUNC) &_EBayesMat_lik_GaussianPIC, 3},
-    {"_EBayesMat_likMat", (DL_FUNC) &_EBayesMat_likMat, 3},
+    {"_EBayesMat_lik_GaussianPIC", (DL_FUNC) &_EBayesMat_lik_GaussianPIC, 4},
+    {"_EBayesMat_likMat", (DL_FUNC) &_EBayesMat_likMat, 4},
     {NULL, NULL, 0}
 };
 
