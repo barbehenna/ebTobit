@@ -4,7 +4,7 @@
 \alias{lik_GaussianPIC}
 \title{Helper Function - generate likelihood for pair (L,R) and mean gr}
 \usage{
-lik_GaussianPIC(L, R, gr)
+lik_GaussianPIC(L, R, gr, s1)
 }
 \arguments{
 \item{L}{numeric vector of lower bounds}
@@ -12,6 +12,8 @@ lik_GaussianPIC(L, R, gr)
 \item{R}{numeric vector of upper bounds}
 
 \item{gr}{numeric vector of means}
+
+\item{s1}{numeric vector of standard deviations}
 }
 \value{
 the likelihood under partial interval censoring
@@ -37,6 +39,6 @@ lik = prod(ifelse(
            stats::pnorm(R-gr) - stats::pnorm(L-gr)))
 
 # Compare R to RcppParallel method
-all.equal(lik, lik_GaussianPIC(L, R, gr))
+all.equal(lik, lik_GaussianPIC(L, R, gr, rep(1,p)))
 }
 }

@@ -4,7 +4,7 @@
 \alias{likMat}
 \title{Helper Function - generate likelihood matrix}
 \usage{
-likMat(L, R, gr)
+likMat(L, R, gr, s1)
 }
 \arguments{
 \item{L}{n x p matrix of lower bounds}
@@ -12,6 +12,8 @@ likMat(L, R, gr)
 \item{R}{n x p matrix of upper bounds}
 
 \item{gr}{m x p matrix of candidate means}
+
+\item{s1}{n x p matrix of standard deviations}
 }
 \value{
 the n x m likelihood matrix under partial interval censoring
@@ -26,6 +28,7 @@ observations (L_i, R_i) and grid of means t_k.
 n = 100; m = 50; p = 5
 gr = matrix(stats::rnorm(m*p), m, p)
 L = R = matrix(stats::rnorm(n*p), n, p)
+s1 = matrix(1, n, p)
 missing.idx = sample.int(n = n*p, size = p*p)
 L[missing.idx] = L[missing.idx] - stats::runif(p, 0, 1)
 
@@ -35,13 +38,13 @@ for (i in 1:n) {
     for(k in 1:m) {
         lik[i,k] = prod(ifelse(
             L[i,] == R[i,],
-            stats::dnorm(L[i,]-gr[k,]),
-            stats::pnorm(R[i,]-gr[k,]) - stats::pnorm(L[i,]-gr[k,])
+            stats::dnorm(L[i,]-gr[k,], sd = s1[i,]),
+            stats::pnorm(R[i,]-gr[k,], sd = s1[i,]) - stats::pnorm(L[i,]-gr[k,], sd = s1[i,])
         ))
     }
 }
 
 # Compare R to RcppParallel method
-all.equal(lik, likMat(L, R, gr))
+all.equal(lik, likMat(L, R, gr, s1))
 }
 }

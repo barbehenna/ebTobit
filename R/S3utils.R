@@ -95,15 +95,22 @@ fitted.EBayesMat <- function(object, method = "mean", ...)
 #' @param object an object inheriting from class \code{\link{EBayesMat}}
 #' @param L n x p matrix of lower bounds on observations
 #' @param R n x p matrix of upper bounds on observations
+#' @param s1 a single numeric standard deviation or an n x p matrix of standard
+#' deviations
 #' @param method either "mean", "L1mediod", or "mode" corresponding to the 
 #' methods: \code{posterior_*.EBayesMat()}
 #' @param ... not used
 #' @export
-predict.EBayesMat <- function(object, L, R = L, method = "mean", ...) {
+predict.EBayesMat <- function(object, L, R = L, s1 = 1, method = "mean", ...) {
     # allow vector inputs when p = 1
     if (is.vector(L) & is.vector(R)) {
         L <- matrix(L, ncol = 1)
         R <- matrix(R, ncol = 1)
+    }
+    
+    # expand s1 to match L
+    if (length(s1) == 1) {
+        s1 <- matrix(s1, nrow = nrow(L), ncol = ncol(L))
     }
 
     # basic checks
@@ -111,9 +118,11 @@ predict.EBayesMat <- function(object, L, R = L, method = "mean", ...) {
     stopifnot(is.matrix(L))
     stopifnot(all(dim(L) == dim(R)))
     stopifnot(all(L <= R))
-
+    stopifnot(all(dim(s1) == dim(L)))
+    stopifnot(all(s1 > 0))
+    
     # likelihood of with new observations
-    new_lik <- likMat(L, R, object$gr)
+    new_lik <- likMat(L = L, R = R, gr = object$gr, s1 = s1)
 
     # compute posterior statistic
     new_obj <- new_EBayesMat(object$prior, object$gr, new_lik)

@@ -48,6 +48,7 @@ EM <- function(A, maxiter = 1e+4L, rtol = 1e-6) {
 #' @param L numeric vector of lower bounds
 #' @param R numeric vector of upper bounds
 #' @param gr numeric vector of means
+#' @param s1 numeric vector of standard deviations
 #' @return the likelihood under partial interval censoring
 #'
 #' @examples
@@ -67,13 +68,13 @@ EM <- function(A, maxiter = 1e+4L, rtol = 1e-6) {
 #'            stats::pnorm(R-gr) - stats::pnorm(L-gr)))
 #'
 #' # Compare R to RcppParallel method
-#' all.equal(lik, lik_GaussianPIC(L, R, gr))
+#' all.equal(lik, lik_GaussianPIC(L, R, gr, rep(1,p)))
 #' }
 #' @useDynLib EBayesMat
 #' @importFrom Rcpp evalCpp
 #' @export
-lik_GaussianPIC <- function(L, R, gr) {
-    .Call('_EBayesMat_lik_GaussianPIC', PACKAGE = 'EBayesMat', L, R, gr)
+lik_GaussianPIC <- function(L, R, gr, s1) {
+    .Call('_EBayesMat_lik_GaussianPIC', PACKAGE = 'EBayesMat', L, R, gr, s1)
 }
 
 #' Helper Function - generate likelihood matrix
@@ -84,6 +85,7 @@ lik_GaussianPIC <- function(L, R, gr) {
 #' @param L n x p matrix of lower bounds
 #' @param R n x p matrix of upper bounds
 #' @param gr m x p matrix of candidate means
+#' @param s1 n x p matrix of standard deviations
 #' @return the n x m likelihood matrix under partial interval censoring
 #'
 #' @examples
@@ -92,6 +94,7 @@ lik_GaussianPIC <- function(L, R, gr) {
 #' n = 100; m = 50; p = 5
 #' gr = matrix(stats::rnorm(m*p), m, p)
 #' L = R = matrix(stats::rnorm(n*p), n, p)
+#' s1 = matrix(1, n, p)
 #' missing.idx = sample.int(n = n*p, size = p*p)
 #' L[missing.idx] = L[missing.idx] - stats::runif(p, 0, 1)
 #'
@@ -101,20 +104,20 @@ lik_GaussianPIC <- function(L, R, gr) {
 #'     for(k in 1:m) {
 #'         lik[i,k] = prod(ifelse(
 #'             L[i,] == R[i,],
-#'             stats::dnorm(L[i,]-gr[k,]),
-#'             stats::pnorm(R[i,]-gr[k,]) - stats::pnorm(L[i,]-gr[k,])
+#'             stats::dnorm(L[i,]-gr[k,], sd = s1[i,]),
+#'             stats::pnorm(R[i,]-gr[k,], sd = s1[i,]) - stats::pnorm(L[i,]-gr[k,], sd = s1[i,])
 #'         ))
 #'     }
 #' }
 #'
 #' # Compare R to RcppParallel method
-#' all.equal(lik, likMat(L, R, gr))
+#' all.equal(lik, likMat(L, R, gr, s1))
 #' }
 #' @useDynLib EBayesMat
 #' @importFrom Rcpp evalCpp
 #' @import RcppParallel
 #' @export
-likMat <- function(L, R, gr) {
-    .Call('_EBayesMat_likMat', PACKAGE = 'EBayesMat', L, R, gr)
+likMat <- function(L, R, gr, s1) {
+    .Call('_EBayesMat_likMat', PACKAGE = 'EBayesMat', L, R, gr, s1)
 }
 

@@ -4,7 +4,7 @@
 \alias{predict.EBayesMat}
 \title{Fitted Estimates of an EBayesMat object}
 \usage{
-\method{predict}{EBayesMat}(object, L, R = L, method = "mean", ...)
+\method{predict}{EBayesMat}(object, L, R = L, s1 = 1, method = "mean", ...)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{\link{EBayesMat}}}
@@ -12,6 +12,9 @@
 \item{L}{n x p matrix of lower bounds on observations}
 
 \item{R}{n x p matrix of upper bounds on observations}
+
+\item{s1}{a single numeric standard deviation or an n x p matrix of standard
+deviations}
 
 \item{method}{either "mean", "L1mediod", or "mode" corresponding to the 
 methods: \code{posterior_*.EBayesMat()}}

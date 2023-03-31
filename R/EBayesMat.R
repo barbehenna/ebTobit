@@ -19,6 +19,8 @@
 #' @param L n x p matrix of lower bounds on observations
 #' @param R n x p matrix of upper bounds on observations
 #' @param gr m x p matrix of grid points
+#' @param s1 a single numeric standard deviation or an n x p matrix of standard
+#' deviations
 #' @param algorithm method to fit prior, either a function or function name
 #' @param pos_lik boolean indicating whether to lower-bound the likelihood
 #' matrix with \code{.Machine$double.xmin} (default: TRUE); helps avoid possible
@@ -50,12 +52,17 @@
 #' L <- ifelse(X < ldl, 0, ifelse(X <= udl, X, udl))
 #' R <- ifelse(X < ldl, ldl, ifelse(X <= udl, X, Inf))
 #' fit2 <- EBayesMat(L, R)
-EBayesMat <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", pos_lik = TRUE, ...) {
+EBayesMat <- function(L, R = L, gr = (R+L)/2, s1 = 1, algorithm = "EM", pos_lik = TRUE, ...) {
     # allow vector inputs when p = 1
     if (is.vector(L) & is.vector(R) & is.vector(gr)) {
         L <- matrix(L, ncol = 1)
         R <- matrix(R, ncol = 1)
         gr <- matrix(gr, ncol = 1)
+    }
+    
+    # expand s1 to match L
+    if (length(s1) == 1) {
+        s1 <- matrix(s1, nrow = nrow(L), ncol = ncol(L))
     }
 
     # basic checks
@@ -64,6 +71,8 @@ EBayesMat <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", pos_lik = TRUE, 
     stopifnot(all(L <= R))
     stopifnot(is.matrix(gr))
     stopifnot(ncol(gr) == ncol(L))
+    stopifnot(all(dim(s1) == dim(L)))
+    stopifnot(all(s1 > 0))
 
     # set-up
     n <- nrow(L)
@@ -76,7 +85,7 @@ EBayesMat <- function(L, R = L, gr = (R+L)/2, algorithm = "EM", pos_lik = TRUE, 
 
     # define full likelihood matrix
     # P_ij = prod_{k=1}^m P(X_ik | theta = t_jk)
-    lik <- likMat(L = L, R = R, gr = gr)
+    lik <- likMat(L = L, R = R, gr = gr, s1 = s1)
     if (pos_lik) lik <- pmax(lik, .Machine$double.xmin)
 
     # fit prior
@@ -122,7 +131,7 @@ new_EBayesMat <- function(prior, gr, lik) {
         warning("prior contains negative values: consider refitting the model")
     
     if (abs(sum(prior) - 1) > sqrt(.Machine$double.eps))
-        warning("prior does not sum to one: model may not be useful")
+        warning("prior does not sum to one: model may not be useful for some tasks")
 
     # create object
     structure(list(
