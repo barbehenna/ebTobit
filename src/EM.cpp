@@ -34,7 +34,7 @@
 //' )
 //' }
 //'
-//' @useDynLib EBayesMat
+//' @useDynLib ebTobit
 //' @importFrom Rcpp evalCpp
 //' @import RcppArmadillo
 //' @export

@@ -32,12 +32,12 @@
 #' )
 #' }
 #'
-#' @useDynLib EBayesMat
+#' @useDynLib ebTobit
 #' @importFrom Rcpp evalCpp
 #' @import RcppArmadillo
 #' @export
 EM <- function(A, maxiter = 1e+4L, rtol = 1e-6) {
-    .Call('_EBayesMat_EM', PACKAGE = 'EBayesMat', A, maxiter, rtol)
+    .Call('_ebTobit_EM', PACKAGE = 'ebTobit', A, maxiter, rtol)
 }
 
 #' Helper Function - generate likelihood for pair (L,R) and mean gr
@@ -70,11 +70,11 @@ EM <- function(A, maxiter = 1e+4L, rtol = 1e-6) {
 #' # Compare R to RcppParallel method
 #' all.equal(lik, lik_GaussianPIC(L, R, gr, rep(1,p)))
 #' }
-#' @useDynLib EBayesMat
+#' @useDynLib ebTobit
 #' @importFrom Rcpp evalCpp
 #' @export
 lik_GaussianPIC <- function(L, R, gr, s1) {
-    .Call('_EBayesMat_lik_GaussianPIC', PACKAGE = 'EBayesMat', L, R, gr, s1)
+    .Call('_ebTobit_lik_GaussianPIC', PACKAGE = 'ebTobit', L, R, gr, s1)
 }
 
 #' Helper Function - generate likelihood matrix
@@ -113,11 +113,11 @@ lik_GaussianPIC <- function(L, R, gr, s1) {
 #' # Compare R to RcppParallel method
 #' all.equal(lik, likMat(L, R, gr, s1))
 #' }
-#' @useDynLib EBayesMat
+#' @useDynLib ebTobit
 #' @importFrom Rcpp evalCpp
 #' @import RcppParallel
 #' @export
 likMat <- function(L, R, gr, s1) {
-    .Call('_EBayesMat_likMat', PACKAGE = 'EBayesMat', L, R, gr, s1)
+    .Call('_ebTobit_likMat', PACKAGE = 'ebTobit', L, R, gr, s1)
 }
 

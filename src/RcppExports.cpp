@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // EM
 Rcpp::NumericVector EM(const arma::mat& A, int maxiter, double rtol);
-RcppExport SEXP _EBayesMat_EM(SEXP ASEXP, SEXP maxiterSEXP, SEXP rtolSEXP) {
+RcppExport SEXP _ebTobit_EM(SEXP ASEXP, SEXP maxiterSEXP, SEXP rtolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -26,7 +26,7 @@ END_RCPP
 }
 // lik_GaussianPIC
 double lik_GaussianPIC(Rcpp::NumericVector L, Rcpp::NumericVector R, Rcpp::NumericVector gr, Rcpp::NumericVector s1);
-RcppExport SEXP _EBayesMat_lik_GaussianPIC(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP, SEXP s1SEXP) {
+RcppExport SEXP _ebTobit_lik_GaussianPIC(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP, SEXP s1SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -40,7 +40,7 @@ END_RCPP
 }
 // likMat
 Rcpp::NumericMatrix likMat(Rcpp::NumericMatrix L, Rcpp::NumericMatrix R, Rcpp::NumericMatrix gr, Rcpp::NumericMatrix s1);
-RcppExport SEXP _EBayesMat_likMat(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP, SEXP s1SEXP) {
+RcppExport SEXP _ebTobit_likMat(SEXP LSEXP, SEXP RSEXP, SEXP grSEXP, SEXP s1SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -54,13 +54,13 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_EBayesMat_EM", (DL_FUNC) &_EBayesMat_EM, 3},
-    {"_EBayesMat_lik_GaussianPIC", (DL_FUNC) &_EBayesMat_lik_GaussianPIC, 4},
-    {"_EBayesMat_likMat", (DL_FUNC) &_EBayesMat_likMat, 4},
+    {"_ebTobit_EM", (DL_FUNC) &_ebTobit_EM, 3},
+    {"_ebTobit_lik_GaussianPIC", (DL_FUNC) &_ebTobit_lik_GaussianPIC, 4},
+    {"_ebTobit_likMat", (DL_FUNC) &_ebTobit_likMat, 4},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_EBayesMat(DllInfo *dll) {
+RcppExport void R_init_ebTobit(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
