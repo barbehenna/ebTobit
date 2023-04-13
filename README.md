@@ -56,9 +56,14 @@ When $L_{ij} = R_{ij}$ there is a direct (noisy) measurement of $\theta_{ij}$, i
 This structure is commonly referred to as partially interval censored data and it allows for any combination of observed measurements and left-, right-, and interval-censored measurements.
 
 We use a Tobit likelihood for each measurement:
+
 $$
-P(L, R \mid \theta) = \left\{ \sigma^{-1} \phi\left( \sigma^{-1} (L-\theta) \right) \right\}^{1(L=R)} \left\{ \Phi\left( \sigma^{-1} (R-\theta) \right) - \Phi\left( \sigma^{-1} (L-\theta) \right) \right\}^{1(L<R)}
+P(L, R \mid \theta) = \begin{cases}
+\phi_{\sigma} ( L - \theta ) & L = R \\
+\Phi_{\sigma} ( R - \theta ) - \Phi_{\sigma} ( L - \theta ) & L < R
+\end{cases}
 $$
+
 where the standard Gaussian likelihood is used when there is a direct Gaussian measurement (ie $L = X = R$) and a Gaussian probability is used when there is a censored Gaussian measurement (ie $L < R$).
 
 
@@ -67,7 +72,7 @@ where the standard Gaussian likelihood is used when there is a direct Gaussian m
 This package provides an object `ebTobit` (Empirical Bayes model with Tobit likelihood) that estimates the prior, $g$ over a user-specified grid `gr` and then computes the posterior mean or $\ell_1$ mediod as estimates for $\theta$.
 In one dimension, the $\ell_1$ mediod is the median.
 By default `gr` is set using the exemplar method so the grid is the maximum likelihood estimate for each $\theta_{ij}$.
-When the censoring interval is finite, the maximum likelihood estimate is $\hat{\theta}_{ij} = 0.5 (L_{ij} + R_{ij})$.
+When the censoring interval is finite, the maximum likelihood estimate for each $\theta_{ij}$ is $0.5 ( L_{ij} + R_{ij} )$
 
 Suppose $p = 1$ and there is no censoring, then the basic utility is:
 
