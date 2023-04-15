@@ -1,11 +1,11 @@
-#### S3 methods to help work with EBayesMat objects ####
+#### S3 methods to help work with ebTobit objects and helper functions ####
 
 
-#' Validate EBayesMat Object
+#' Validate ebTobit Object
 #' @param object any R object
 #' @export
-is.EBayesMat <- function(object) {
-    all(inherits(object, "EBayesMat") &
+is.ebTobit <- function(object) {
+    all(inherits(object, "ebTobit") &
             is.numeric(object$prior) &
             is.vector(object$prior) &
             is.numeric(object$lik) &
@@ -21,31 +21,31 @@ is.EBayesMat <- function(object) {
 }
 
 
-#' Marginal Log-likelihood of an EBayesMat object
-#' @param object an object inheriting from class \code{\link{EBayesMat}}
+#' Marginal Log-likelihood of an ebTobit object
+#' @param object an object inheriting from class \code{\link{ebTobit}}
 #' @param ... not used
 #' @export
-logLik.EBayesMat <- function(object, ...) with(object, sum(log(lik %*% prior)))
+logLik.ebTobit <- function(object, ...) with(object, sum(log(lik %*% prior)))
 
 
-#' Compute Posterior Mean of an EBayesMat object
-#' @param object an object inheriting from class \code{\link{EBayesMat}}
+#' Compute Posterior Mean of an ebTobit object
+#' @param object an object inheriting from class \code{\link{ebTobit}}
 #' @export
-posterior_mean.EBayesMat <- function(object)
+posterior_mean.ebTobit <- function(object)
     with(object, (lik %*% (prior * gr)) / drop(lik %*% prior))
 
 
-#' Compute the Posterior L1 Mediod of an EBayesMat object
+#' Compute the Posterior L1 Mediod of an ebTobit object
 #'
 #' The posterior L1 mediod is defined as \\arg\\min_y E |y - t|_1 where the
 #' expectation is taken over the posterior t|X=x. Here the posterior L1 mediod
 #' is evaluated for each of the observations used to fit \code{object}.
 #'
-#' @param object an object inheriting from class \code{\link{EBayesMat}}
+#' @param object an object inheriting from class \code{\link{ebTobit}}
 #'
 #' @importFrom stats optimize
 #' @export
-posterior_L1mediod.EBayesMat <- function(object) {
+posterior_L1mediod.ebTobit <- function(object) {
     # set-up
     n = nrow(object$lik)
     p = ncol(object$gr)
@@ -66,42 +66,42 @@ posterior_L1mediod.EBayesMat <- function(object) {
 }
 
 
-#' Compute Posterior Mode of an EBayesMat object
-#' @param object an object inheriting from class \code{\link{EBayesMat}}
+#' Compute Posterior Mode of an ebTobit object
+#' @param object an object inheriting from class \code{\link{ebTobit}}
 #' @export
-posterior_mode.EBayesMat <- function(object)
+posterior_mode.ebTobit <- function(object)
     with(object, gr[apply(sweep(lik, MARGIN = 2, STATS = prior, FUN = "*"), MARGIN = 1, FUN = "which.max"), ])
 
 
-#' Fitted Estimates of an EBayesMat object
+#' Fitted Estimates of an ebTobit object
 #'
 #' Compute either the posterior mean (default) or posterior L1 mediod which
 #' corresponds to the posterior median in one-dimension.
 #'
-#' @param object an object inheriting from class \code{\link{EBayesMat}}
+#' @param object an object inheriting from class \code{\link{ebTobit}}
 #' @param method either "mean", "L1mediod", or "mode" corresponding to the 
-#' methods: \code{posterior_*.EBayesMat()}
+#' methods: \code{posterior_*.ebTobit()}
 #' @param ... not used
 #' @export
-fitted.EBayesMat <- function(object, method = "mean", ...)
-    match.fun(paste0("posterior_",method,".EBayesMat"))(object)
+fitted.ebTobit <- function(object, method = "mean", ...)
+    match.fun(paste0("posterior_",method,".ebTobit"))(object)
 
 
-#' Fitted Estimates of an EBayesMat object
+#' Fitted Estimates of an ebTobit object
 #'
 #' Compute either the posterior mean (default) or posterior L1 mediod which
 #' corresponds to the posterior median in one-dimension.
 #'
-#' @param object an object inheriting from class \code{\link{EBayesMat}}
+#' @param object an object inheriting from class \code{\link{ebTobit}}
 #' @param L n x p matrix of lower bounds on observations
 #' @param R n x p matrix of upper bounds on observations
 #' @param s1 a single numeric standard deviation or an n x p matrix of standard
 #' deviations
 #' @param method either "mean", "L1mediod", or "mode" corresponding to the 
-#' methods: \code{posterior_*.EBayesMat()}
+#' methods: \code{posterior_*.ebTobit()}
 #' @param ... not used
 #' @export
-predict.EBayesMat <- function(object, L, R = L, s1 = 1, method = "mean", ...) {
+predict.ebTobit <- function(object, L, R = L, s1 = 1, method = "mean", ...) {
     # allow vector inputs when p = 1
     if (is.vector(L) & is.vector(R)) {
         L <- matrix(L, ncol = 1)
@@ -114,7 +114,7 @@ predict.EBayesMat <- function(object, L, R = L, s1 = 1, method = "mean", ...) {
     }
 
     # basic checks
-    stopifnot(is.EBayesMat(object))
+    stopifnot(is.ebTobit(object))
     stopifnot(is.matrix(L))
     stopifnot(all(dim(L) == dim(R)))
     stopifnot(all(L <= R))
@@ -125,6 +125,6 @@ predict.EBayesMat <- function(object, L, R = L, s1 = 1, method = "mean", ...) {
     new_lik <- likMat(L = L, R = R, gr = object$gr, s1 = s1)
 
     # compute posterior statistic
-    new_obj <- new_EBayesMat(object$prior, object$gr, new_lik)
-    match.fun(paste0("posterior_",method,".EBayesMat"))(new_obj)
+    new_obj <- new_ebTobit(object$prior, object$gr, new_lik)
+    match.fun(paste0("posterior_",method,".ebTobit"))(new_obj)
 }

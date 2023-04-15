@@ -14,8 +14,14 @@
 #' @param ... further arguments passed to \code{Rmosek} such as \code{rtol}
 #' @return a vector containing the fitted prior
 #' @export
-ConvexPrimal <- function(A, ...) REBayes::KWPrimal(A = A, d = rep(1, ncol(A)), w = rep(1 / nrow(A), nrow(A)), ...)$f
+ConvexPrimal <- function(A, ...) 
+    REBayes::KWPrimal(A = A, 
+                      d = rep(1, ncol(A)), 
+                      w = rep(1 / nrow(A), nrow(A)), ...)$f
 
 #' @inherit ConvexPrimal
 #' @export
-ConvexDual <- function(A, ...) REBayes::KWDual(A = A, d = rep(1, ncol(A)), w = rep(1 / nrow(A), nrow(A)), ...)$f
+ConvexDual <- function(A, ...) 
+    REBayes::KWDual(A = A, 
+                    d = rep(1, ncol(A)), 
+                    w = rep(1 / nrow(A), nrow(A)), ...)$f

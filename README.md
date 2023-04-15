@@ -1,8 +1,8 @@
-## Empirical Bayesian Estimation of Gaussian Matrices
+## Empirical Bayesian Estimation of Censored Gaussian (Tobit) Matrices
 
 ### What is it?
 
-An R package for denoising Gaussian means with empirical Bayes $g$-modeling.
+An R package for denoising censored, Gaussian means with empirical Bayes $g$-modeling.
 The general model is as follows:
 
 $$
@@ -10,7 +10,7 @@ $$
 $$
 
 $$
-X_{ij} \mid \theta_{ij} \sim_{indep.} N(\theta_{ij}, 1)
+X_{ij} \mid \theta_{ij} \sim_{indep.} N(\theta_{ij}, \sigma^2)
 $$
 
 $$
@@ -51,19 +51,33 @@ R_{n1} & \dots & R_{np} \\
 \end{bmatrix}
 $$
 
-The bounds $L_{ij}$ and $R_{ij}$ are assumed to be known and constant.
+The bounds $L_{ij}$ and $R_{ij}$ are assumed to be known.
 When $L_{ij} = R_{ij}$ there is a direct (noisy) measurement of $\theta_{ij}$, if $L_{ij} < R_{ij}$ then there is a censored measurement of $\theta_{ij}$.
 This structure is commonly referred to as partially interval censored data and it allows for any combination of observed measurements and left-, right-, and interval-censored measurements.
+
+We use a Tobit likelihood for each measurement:
+
+$$
+P(L, R \mid \theta) = \begin{cases}
+\phi_{\sigma} ( L - \theta ) & L = R \\
+\Phi_{\sigma} ( R - \theta ) - \Phi_{\sigma} ( L - \theta ) & L < R
+\end{cases}
+$$
+
+where the standard Gaussian likelihood is used when there is a direct Gaussian measurement (ie $L = X = R$) and a Gaussian probability is used when there is a censored Gaussian measurement (ie $L < R$).
 
 
 ### What does it do?
 
-This package provides an object `EBayesMat` (Empirical Bayes Gaussian Matrix estimate) that estimates the prior, $g$ over a user-specified grid `gr` and then computes the posterior mean or $\ell_1$ mediod as estimates for $\theta$. By default `gr` is set using the exemplar method so the grid is the maximum likelihood estimate for each $\theta_{ij}$.
+This package provides an object `ebTobit` (Empirical Bayes model with Tobit likelihood) that estimates the prior, $g$ over a user-specified grid `gr` and then computes the posterior mean or $\ell_1$ mediod as estimates for $\theta$.
+In one dimension, the $\ell_1$ mediod is the median.
+By default `gr` is set using the exemplar method so the grid is the maximum likelihood estimate for each $\theta_{ij}$.
+When the censoring interval is finite, the maximum likelihood estimate for each $\theta_{ij}$ is $0.5 ( L_{ij} + R_{ij} )$
 
 Suppose $p = 1$ and there is no censoring, then the basic utility is:
 
 ```r
-library(EBayesMat)
+library(ebTobit)
 
 # create noisy measurements
 n <- 100
@@ -71,7 +85,7 @@ t <- sample(c(0, 5), size = n, replace = TRUE, prob = c(0.8, 0.2))
 x <- t + stats::rnorm(n)
 
 # fit g-model with default prior grid
-res1 <- EBayesMat(x)
+res1 <- ebTobit(x)
 
 # measure performance of estimated posterior mean
 mean((t - fitted(res1))^2)
@@ -80,7 +94,7 @@ mean((t - fitted(res1))^2)
 Next we can look at a more complicated example with $p = 10$:
 
 ```r
-library(EBayesMat)
+library(ebTobit)
 
 # create noisy measurements (low rank structure)
 n <- 1000; p <- 10; r <- 3
@@ -93,15 +107,15 @@ L <- ifelse(x < 1, 0, x)
 R <- ifelse(x < 1, 1, x)
 
 # fit g-model with default prior grid
-res2 <- EBayesMat(x)
-res3 <- EBayesMat(L, R)
+res2 <- ebTobit(x)
+res3 <- ebTobit(L, R)
 
 # oberve that the censoring affects the fitted range 
 range(fitted(res2))
 range(fitted(res3))
 
 # fit censored data with a different grid (large and random not MLE)
-res4 <- EBayesMat(
+res4 <- ebTobit(
     L = L,
     R = R,
     gr = sapply(1:p, function(j) stats::runif(1e+4, min = min(L[,j]), max = max(R[,j]))),
@@ -121,13 +135,13 @@ predict(res4, y, method = "L1mediod") # posterior L1-mediod
 Until the package is available on CRAN, it can be installed directly from GitHub:
 
 ```r
-remotes::install_github("barbehenna/EBayesMat")
+remotes::install_github("barbehenna/ebTobit")
 ```
 
 
 ### Who wrote it?
 
-Alton Barbehenn and [Sihai Dave Zhao](https://github.com/sdzhao)
+[Alton Barbehenn](https://github.com/barbehenna) and [Sihai Dave Zhao](https://github.com/sdzhao)
 
 
 ### What license?

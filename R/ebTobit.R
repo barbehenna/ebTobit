@@ -1,15 +1,19 @@
-#' Create and Fit an EBayesMat Object for Matrix Estimation
+#' Empirical Bayes Matrix Estimation under a Tobit Likelihood
 #'
 #' Fit and estimate the nonparametric maximum likelihood estimator in R^p
 #' (p >= 1) when the likelihood is Gaussian and possibly interval censored. If
 #' p = 1, then \code{L}, \code{R}, and \code{gr} may be vectors (they are
 #' immediately converted into matrices internally).
+#' 
+#' Each observation is stored in a pair of matrices, \code{L} and \code{R}. If
+#' L_ij = R_ij then a direct measurement X_ij ~ N(theta, s1^2) is made; 
+#' if L_ij < R_ij then the measurement is censored so that L_ij < X_ij < R_ij.
 #'
 #' To use a custom fitting algorithm, define a function \code{MyAlg} that
-#' takes in an n x m likelihood matrix: P_ij = P(X_i | theta = t_j) and returns
-#' a vector of estimated prior weights for t_j. Once \code{MyAlg} is defined,
-#' fit the prior by using \code{algorithm = "MyAlg"} or use the function
-#' itself \code{algorithm = MyAlg}.
+#' takes in an n x m likelihood matrix: P_ij = P(L_i, R_i | theta = t_j) and
+#' returns a vector of estimated prior weights for t_j. Once \code{MyAlg} is
+#' defined, fit the prior by using \code{algorithm = "MyAlg"} or use the
+#' function itself \code{algorithm = MyAlg}.
 #'
 #' Alternative fitting algorithms "ConvexPrimal"and "ConvexDual" have been
 #' (wrappers of \code{REBayes::KWPrimal} and \code{REBayes::KWDual},
@@ -28,7 +32,7 @@
 #' @param ... further arguments passed into fitting method such as \code{rtol}
 #' and \code{maxiter}, see for example \code{\link{EM}}
 #'
-#' @return a fitted \code{EBayesMat} object containing at least the prior weights,
+#' @return a fitted \code{ebTobit} object containing at least the prior weights,
 #' corresponding grid/support points, and likelihood matrix relating the grid to
 #' the observations
 #' @export
@@ -39,20 +43,25 @@
 #' p <- 5
 #' r <- 2
 #' U.true <- matrix(stats::rexp(n*r), n, r)
-#' V.true <- matrix(sample(x = c(1,4,7), size = p*r, replace = TRUE, prob = c(0.7, 0.2, 0.1)), p, r)
+#' V.true <- matrix(sample(x = c(1,4,7), 
+#'                         size = p*r, 
+#'                         replace = TRUE, 
+#'                         prob = c(0.7, 0.2, 0.1)), 
+#'                  p, r)
 #' TH <- tcrossprod(U.true, V.true)
 #' X <- TH + matrix(stats::rnorm(n*p), n, p)
 #'
 #' # fit uncensored method
-#' fit1 <- EBayesMat(X)
+#' fit1 <- ebTobit(X)
 #'
 #' # fit left-censored method
 #' ldl <- 1 # lower and upper detection limits
 #' udl <- Inf
 #' L <- ifelse(X < ldl, 0, ifelse(X <= udl, X, udl))
 #' R <- ifelse(X < ldl, ldl, ifelse(X <= udl, X, Inf))
-#' fit2 <- EBayesMat(L, R)
-EBayesMat <- function(L, R = L, gr = (R+L)/2, s1 = 1, algorithm = "EM", pos_lik = TRUE, ...) {
+#' fit2 <- ebTobit(L, R)
+ebTobit <- function(L, R = L, gr = (R+L)/2, s1 = 1, algorithm = "EM", 
+                    pos_lik = TRUE, ...) {
     # allow vector inputs when p = 1
     if (is.vector(L) & is.vector(R) & is.vector(gr)) {
         L <- matrix(L, ncol = 1)
@@ -92,7 +101,7 @@ EBayesMat <- function(L, R = L, gr = (R+L)/2, s1 = 1, algorithm = "EM", pos_lik 
     prior <- algorithm(lik, ...)
 
     # return fit
-    new_EBayesMat(
+    new_ebTobit(
         prior = prior,
         gr = gr,
         lik = lik
@@ -102,11 +111,11 @@ EBayesMat <- function(L, R = L, gr = (R+L)/2, s1 = 1, algorithm = "EM", pos_lik 
 
 
 
-#' Create a new EBayesMat object
+#' Create a new ebTobit object
 #'
-#' Validate the provided elements and populate the object. Future extensions may
-#' be loosened to allow non-numeric \code{gr} but it is currently required for
-#' posterior mean and mediod calculations.
+#' Validate the provided elements and populate the object. Current methods
+#' require that \code{gr} is numeric for that calculation of posterior
+#' statistics (mean and mediod).
 #'
 #' @param prior numeric vector of non-negative weights (sums to one)
 #' @param gr numeric matrix of support points
@@ -115,7 +124,7 @@ EBayesMat <- function(L, R = L, gr = (R+L)/2, s1 = 1, algorithm = "EM", pos_lik 
 #' corresponding grid/support points, and likelihood matrix relating the grid to
 #' the observations
 #' @export
-new_EBayesMat <- function(prior, gr, lik) {
+new_ebTobit <- function(prior, gr, lik) {
     # basic checks
     stopifnot(is.vector(prior))
     stopifnot(is.numeric(prior))
@@ -138,5 +147,5 @@ new_EBayesMat <- function(prior, gr, lik) {
         prior = prior,
         gr = gr,
         lik = lik
-    ), class = "EBayesMat")
+    ), class = "ebTobit")
 }
