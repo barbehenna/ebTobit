@@ -1,5 +1,9 @@
 ## Empirical Bayesian Estimation of Censored Gaussian (Tobit) Matrices
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/barbehenna/ebTobit/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/barbehenna/ebTobit/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 ### What is it?
 
 An R package for denoising censored, Gaussian means with empirical Bayes $g$-modeling.
