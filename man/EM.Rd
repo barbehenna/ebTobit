@@ -28,16 +28,16 @@ tolerance level.
 }
 \examples{
 set.seed(1)
-t = sample.int(5, size = 1000, replace = TRUE)
-x = t + stats::rnorm(1000)
-gr = seq(from = min(x), to = max(x), length.out = 500)
+t = sample(c(0,5), size = 100, replace = TRUE)
+x = t + stats::rnorm(100)
+gr = seq(from = min(x), to = max(x), length.out = 50)
 A = stats::dnorm(outer(x, gr, "-"))
 EM(A)
 
 \dontrun{
 all.equal(
-    REBayes::KWPrimal(A = A, d = rep(1, 500), w = rep(1/1000, 1000))$f,
-    drop(EM(A, maxiter = 1e+9, tol = 1e-16)) # EM alg converges slowly
+    REBayes::KWPrimal(A = A, d = rep(1, 50), w = rep(1/100, 100))$f,
+    EM(A, maxiter = 1e+6, rtol = 1e-16) # EM alg converges slowly
 )
 }
 
