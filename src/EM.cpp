@@ -36,7 +36,6 @@
 //'
 //' @useDynLib ebTobit
 //' @importFrom Rcpp evalCpp
-//' @import RcppArmadillo
 //' @export
 // [[Rcpp::export]]
 Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1e+4, double rtol = 1e-6) {

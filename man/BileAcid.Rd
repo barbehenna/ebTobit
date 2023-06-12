@@ -12,9 +12,9 @@ and each column is an bile acid measurement.
 BileAcid
 }
 \description{
-A bile acid data set taken from 
-\href{https://doi.org/10.1096/fj.201700055R}{Lei et al. (2018)} via 
-\href{https://doi.org/10.1371/journal.pcbi.1005973}{Wei et al. (2018)}
+A bile acid data set taken from Lei et al. (2018)
+\doi{https://doi.org/10.1096/fj.201700055R} via Wei et al. (2018)
+\doi{https://doi.org/10.1371/journal.pcbi.1005973}
 (corresponding GitHub repository: https://github.com/WandeRum/GSimp). The 
 values in \code{BileAcid} can be assumed to be independent log-normal 
 measurements.

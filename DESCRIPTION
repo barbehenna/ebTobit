@@ -2,7 +2,7 @@ Type: Package
 Package: ebTobit
 Title: Empirical Bayesian Tobit Matrix Estimation
 Version: 1.0.1
-Date: 2023-04-13
+Date: 2023-06-12
 Authors@R: c(
     person("Alton", "Barbehenn", , "altonbarbehenn@gmail.com", role = c("aut", "cre")),
     person("Sihai Dave", "Zhao", , "sdzhao@illinois.edu", role = "aut")
@@ -15,7 +15,6 @@ URL: https://github.com/barbehenna/ebTobit
 BugReports: https://github.com/barbehenna/ebTobit/issues
 Imports: 
     Rcpp (>= 1.0.10),
-    RcppArmadillo,
     RcppParallel,
     stats
 Suggests:
