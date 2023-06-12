@@ -101,10 +101,9 @@ Next we can look at a more complicated example with $p = 10$:
 library(ebTobit)
 
 # create noisy measurements (low rank structure)
-n <- 1000; p <- 10; r <- 3
-u <- matrix(sample(1:5, size = n*r, replace = TRUE), n, r)
-v <- matrix(stats::rexp(p*r), p, r)
-x <- tcrossprod(u, v) + matrix(stats::rnorm(n*p), n, p)
+n <- 1000; p <- 10
+t <- matrix(stats::rgamma(n*p, shape = 5, rate = 1), n, p)
+x <- t + matrix(stats::rnorm(n*p), n, p)
 
 # assume we can't accurately measure x < 1 but we know theta > 0
 L <- ifelse(x < 1, 0, x)
@@ -140,6 +139,15 @@ Until the package is available on CRAN, it can be installed directly from GitHub
 
 ```r
 remotes::install_github("barbehenna/ebTobit")
+```
+
+
+### Data
+
+This R package also includes a real bile acid `data.frame` taken directly from Lei et al. (2018) (https://doi.org/10.1096/fj.201700055R) via https://github.com/WandeRum/GSimp (https://doi.org/10.1371/journal.pcbi.1005973). The bile acid data contains measurements of 34 bile acids for 198 patients; no missing values are present in the data. In our modeling, we assume the bile acid values are independent log-normal measurements.
+
+```r
+data(BileAcid, package = "ebTobit") # attach the bile acid data
 ```
 
 

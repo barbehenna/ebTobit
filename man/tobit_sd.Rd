@@ -42,7 +42,7 @@ column-specific, row-specific, and rank-1.
 }
 \examples{
 set.seed(1)
-n = 1000; p = 5; r = 2
+n = 100; p = 5; r = 2
 U.true = matrix(stats::rexp(n*r), n, r)
 V.true = matrix(sample(x = c(1,4,7),
                        size = p*r, 
