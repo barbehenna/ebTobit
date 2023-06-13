@@ -11,6 +11,9 @@
 
 \item{...}{not used}
 }
+\value{
+log likelihood for the fitted empirical Bayes model in \code{object}
+}
 \description{
 Marginal Log-likelihood of an ebTobit object
 }

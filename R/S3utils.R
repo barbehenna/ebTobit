@@ -3,6 +3,7 @@
 
 #' Validate ebTobit Object
 #' @param object any R object
+#' @returns boolean: TRUE if the object is a valid \code{\link{ebTobit}} object
 #' @export
 is.ebTobit <- function(object) {
     all(inherits(object, "ebTobit") &
@@ -24,12 +25,15 @@ is.ebTobit <- function(object) {
 #' Marginal Log-likelihood of an ebTobit object
 #' @param object an object inheriting from class \code{\link{ebTobit}}
 #' @param ... not used
+#' @returns log likelihood for the fitted empirical Bayes model in \code{object}
 #' @export
 logLik.ebTobit <- function(object, ...) with(object, sum(log(lik %*% prior)))
 
 
 #' Compute Posterior Mean of an ebTobit object
 #' @param object an object inheriting from class \code{\link{ebTobit}}
+#' @returns numeric matrix of posterior means for the fitted empirical Bayes
+#' model in \code{object}
 #' @export
 posterior_mean.ebTobit <- function(object)
     with(object, (lik %*% (prior * gr)) / drop(lik %*% prior))
@@ -42,7 +46,9 @@ posterior_mean.ebTobit <- function(object)
 #' is evaluated for each of the observations used to fit \code{object}.
 #'
 #' @param object an object inheriting from class \code{\link{ebTobit}}
-#'
+#' @returns numeric matrix of posterior L1 mediods for the fitted empirical
+#' Bayes model in \code{object}
+#' 
 #' @importFrom stats optimize
 #' @export
 posterior_L1mediod.ebTobit <- function(object) {
@@ -68,6 +74,8 @@ posterior_L1mediod.ebTobit <- function(object) {
 
 #' Compute Posterior Mode of an ebTobit object
 #' @param object an object inheriting from class \code{\link{ebTobit}}
+#' @returns numeric matrix of posterior modes for the fitted empirical
+#' Bayes model in \code{object}
 #' @export
 posterior_mode.ebTobit <- function(object)
     with(object, gr[apply(sweep(lik, MARGIN = 2, STATS = prior, FUN = "*"), MARGIN = 1, FUN = "which.max"), ])
@@ -82,6 +90,8 @@ posterior_mode.ebTobit <- function(object)
 #' @param method either "mean", "L1mediod", or "mode" corresponding to the 
 #' methods: \code{posterior_*.ebTobit()}
 #' @param ... not used
+#' @returns matrix containing the posterior estimates for measurements in the
+#' fit empirical Bayes model \code{object}
 #' @export
 fitted.ebTobit <- function(object, method = "mean", ...)
     match.fun(paste0("posterior_",method,".ebTobit"))(object)
@@ -100,6 +110,8 @@ fitted.ebTobit <- function(object, method = "mean", ...)
 #' @param method either "mean", "L1mediod", or "mode" corresponding to the 
 #' methods: \code{posterior_*.ebTobit()}
 #' @param ... not used
+#' @returns matrix of posterior estimates for new observations under the
+#' provided, pre-fit empirical Bayes model \code{object}
 #' @export
 predict.ebTobit <- function(object, L, R = L, s1 = 1, method = "mean", ...) {
     # allow vector inputs when p = 1

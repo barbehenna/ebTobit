@@ -14,6 +14,10 @@ methods: \code{posterior_*.ebTobit()}}
 
 \item{...}{not used}
 }
+\value{
+matrix containing the posterior estimates for measurements in the
+fit empirical Bayes model \code{object}
+}
 \description{
 Compute either the posterior mean (default) or posterior L1 mediod which
 corresponds to the posterior median in one-dimension.

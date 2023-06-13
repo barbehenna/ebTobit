@@ -2,16 +2,19 @@ Type: Package
 Package: ebTobit
 Title: Empirical Bayesian Tobit Matrix Estimation
 Version: 1.0.1
-Date: 2023-06-12
+Date: 2023-06-13
 Authors@R: c(
     person("Alton", "Barbehenn", , "altonbarbehenn@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0000-3364-7204")),
     person("Sihai Dave", "Zhao", , "sdzhao@illinois.edu", role = "aut")
   )
 Description: Estimation tools for multidimensional Gaussian means using
-    empirical Bayesian g-modeling. Methods are able to fully observed data as
+    empirical Bayesian g-modeling. Methods are able to handle fully observed data as
     well as left-, right-, and interval-censored observations (Tobit
-    likelihood). Additional, lower-level functionality is provided that can be
-    used to accelerate many empirical Bayes and nonparametric maximum likelihood
+    likelihood); descriptions of these methods can be found in Barbehenn and
+    Zhao (2023) <arXiv:2306.07239>. Additional, lower-level functionality based
+    on Kiefer and Wolfowitz (1956) <doi:10.1214/aoms/1177728066> and Jiang and
+    Zhang (2009) <doi:10.1214/08-AOS638> is provided that can be used to
+    accelerate many empirical Bayes and nonparametric maximum likelihood
     problems.
 License: GPL-3
 URL: https://github.com/barbehenna/ebTobit

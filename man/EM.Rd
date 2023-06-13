@@ -33,12 +33,12 @@ x = t + stats::rnorm(100)
 gr = seq(from = min(x), to = max(x), length.out = 50)
 A = stats::dnorm(outer(x, gr, "-"))
 EM(A)
-
 \dontrun{
+# compare to solution from rmosek (requires additional library installation):
 all.equal(
     REBayes::KWPrimal(A = A, d = rep(1, 50), w = rep(1/100, 100))$f,
-    EM(A, maxiter = 1e+6, rtol = 1e-16) # EM alg converges slowly
+    EM(A, maxiter = 1e+6, rtol = 1e-16), # EM alg converges slowly
+    tolerance = 0.01
 )
 }
-
 }

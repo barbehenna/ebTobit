@@ -23,7 +23,6 @@ Compute P(L_i, R_i | theta = t_k) for observations (L_i, R_i) and grid of
 mean t_k.
 }
 \examples{
-\dontrun{
 # set-up
 p = 15
 gr = stats::rnorm(p)
@@ -40,5 +39,4 @@ lik = prod(ifelse(
 
 # Compare R to RcppParallel method
 all.equal(lik, lik_GaussianPIC(L, R, gr, rep(1,p)))
-}
 }

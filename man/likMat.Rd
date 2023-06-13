@@ -23,7 +23,6 @@ Compute a matrix L whose entries are L[i,k] = P(L_i, R_i | theta = t_k) for
 observations (L_i, R_i) and grid of means t_k.
 }
 \examples{
-\dontrun{
 # set-up
 n = 100; m = 50; p = 5
 gr = matrix(stats::rnorm(m*p), m, p)
@@ -46,5 +45,4 @@ for (i in 1:n) {
 
 # Compare R to RcppParallel method
 all.equal(lik, likMat(L, R, gr, s1))
-}
 }

@@ -9,6 +9,10 @@ posterior_L1mediod.ebTobit(object)
 \arguments{
 \item{object}{an object inheriting from class \code{\link{ebTobit}}}
 }
+\value{
+numeric matrix of posterior L1 mediods for the fitted empirical
+Bayes model in \code{object}
+}
 \description{
 The posterior L1 mediod is defined as \\arg\\min_y E |y - t|_1 where the
 expectation is taken over the posterior t|X=x. Here the posterior L1 mediod

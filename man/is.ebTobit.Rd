@@ -9,6 +9,9 @@ is.ebTobit(object)
 \arguments{
 \item{object}{any R object}
 }
+\value{
+boolean: TRUE if the object is a valid \code{\link{ebTobit}} object
+}
 \description{
 Validate ebTobit Object
 }

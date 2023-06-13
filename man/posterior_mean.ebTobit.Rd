@@ -9,6 +9,10 @@ posterior_mean.ebTobit(object)
 \arguments{
 \item{object}{an object inheriting from class \code{\link{ebTobit}}}
 }
+\value{
+numeric matrix of posterior means for the fitted empirical Bayes
+model in \code{object}
+}
 \description{
 Compute Posterior Mean of an ebTobit object
 }

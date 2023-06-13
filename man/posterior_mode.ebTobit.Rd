@@ -9,6 +9,10 @@ posterior_mode.ebTobit(object)
 \arguments{
 \item{object}{an object inheriting from class \code{\link{ebTobit}}}
 }
+\value{
+numeric matrix of posterior modes for the fitted empirical
+Bayes model in \code{object}
+}
 \description{
 Compute Posterior Mode of an ebTobit object
 }

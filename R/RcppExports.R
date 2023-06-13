@@ -24,14 +24,14 @@
 #' gr = seq(from = min(x), to = max(x), length.out = 50)
 #' A = stats::dnorm(outer(x, gr, "-"))
 #' EM(A)
-#'
 #' \dontrun{
+#' # compare to solution from rmosek (requires additional library installation):
 #' all.equal(
 #'     REBayes::KWPrimal(A = A, d = rep(1, 50), w = rep(1/100, 100))$f,
-#'     EM(A, maxiter = 1e+6, rtol = 1e-16) # EM alg converges slowly
+#'     EM(A, maxiter = 1e+6, rtol = 1e-16), # EM alg converges slowly
+#'     tolerance = 0.01
 #' )
 #' }
-#'
 #' @useDynLib ebTobit
 #' @importFrom Rcpp evalCpp
 #' @export
@@ -51,7 +51,6 @@ EM <- function(A, maxiter = 1e+4L, rtol = 1e-6) {
 #' @return the likelihood under partial interval censoring
 #'
 #' @examples
-#' \dontrun{
 #' # set-up
 #' p = 15
 #' gr = stats::rnorm(p)
@@ -68,7 +67,6 @@ EM <- function(A, maxiter = 1e+4L, rtol = 1e-6) {
 #'
 #' # Compare R to RcppParallel method
 #' all.equal(lik, lik_GaussianPIC(L, R, gr, rep(1,p)))
-#' }
 #' @useDynLib ebTobit
 #' @importFrom Rcpp evalCpp
 #' @export
@@ -88,7 +86,6 @@ lik_GaussianPIC <- function(L, R, gr, s1) {
 #' @return the n x m likelihood matrix under partial interval censoring
 #'
 #' @examples
-#' \dontrun{
 #' # set-up
 #' n = 100; m = 50; p = 5
 #' gr = matrix(stats::rnorm(m*p), m, p)
@@ -111,7 +108,6 @@ lik_GaussianPIC <- function(L, R, gr, s1) {
 #'
 #' # Compare R to RcppParallel method
 #' all.equal(lik, likMat(L, R, gr, s1))
-#' }
 #' @useDynLib ebTobit
 #' @importFrom Rcpp evalCpp
 #' @import RcppParallel

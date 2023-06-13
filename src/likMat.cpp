@@ -25,7 +25,6 @@ inline double phi_cpp(double x, double y, double s) {
 //' @return the likelihood under partial interval censoring
 //'
 //' @examples
-//' \dontrun{
 //' # set-up
 //' p = 15
 //' gr = stats::rnorm(p)
@@ -42,7 +41,6 @@ inline double phi_cpp(double x, double y, double s) {
 //'
 //' # Compare R to RcppParallel method
 //' all.equal(lik, lik_GaussianPIC(L, R, gr, rep(1,p)))
-//' }
 //' @useDynLib ebTobit
 //' @importFrom Rcpp evalCpp
 //' @export
@@ -151,7 +149,6 @@ struct LikMat : public RcppParallel::Worker {
 //' @return the n x m likelihood matrix under partial interval censoring
 //'
 //' @examples
-//' \dontrun{
 //' # set-up
 //' n = 100; m = 50; p = 5
 //' gr = matrix(stats::rnorm(m*p), m, p)
@@ -174,7 +171,6 @@ struct LikMat : public RcppParallel::Worker {
 //'
 //' # Compare R to RcppParallel method
 //' all.equal(lik, likMat(L, R, gr, s1))
-//' }
 //' @useDynLib ebTobit
 //' @importFrom Rcpp evalCpp
 //' @import RcppParallel
