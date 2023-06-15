@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+authors:
+  - given-names: Alton
+    family-names: Barbehenn
+    orcid: 'https://orcid.org/0009-0000-3364-7204'
+  - given-names: Sihai Dave
+    family-names: Zhao
+title: 'ebTobit: Empirical Bayesian Tobit Matrix Estimation'
+version: 1.0.1
+doi: 10.48550/arXiv.2306.07239
+date-released: 2023-06-15
+repository-code: 'https://github.com/barbehenna/ebTobit'
+license: GPL-3.0
