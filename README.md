@@ -2,6 +2,8 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/barbehenna/ebTobit/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/barbehenna/ebTobit/actions/workflows/R-CMD-check.yaml)
+[![CRAN status](https://www.r-pkg.org/badges/version/ebTobit)](https://CRAN.R-project.org/package=ebTobit)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 ### What is it?
@@ -135,7 +137,7 @@ predict(res4, y, method = "L1mediod") # posterior L1-mediod
 
 ### How do install it?
 
-Until the package is available on CRAN, it can be installed directly from GitHub:
+This package is available on CRAN. It can also be installed directly from GitHub:
 
 ```r
 remotes::install_github("barbehenna/ebTobit")
