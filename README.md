@@ -3,6 +3,8 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/barbehenna/ebTobit/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/barbehenna/ebTobit/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/ebTobit)](https://CRAN.R-project.org/package=ebTobit)
+[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/ebTobit?color=blue)](https://r-pkg.org/pkg/ebTobit)
+[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/ebTobit?color=blue)](https://r-pkg.org/pkg/ebTobit)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
