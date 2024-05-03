@@ -50,7 +50,7 @@ Rcpp::NumericVector EM(const arma::mat& A, int maxiter = 1e+4, double rtol = 1e-
         f = A * g;
 
         loglik = arma::sum(arma::log(f));
-        if(loglik - loglik_old < rtol * abs(loglik_old)) {
+        if(loglik - loglik_old < rtol * std::abs(loglik_old)) {
             conv = true;
             break;
         }
